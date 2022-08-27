@@ -1,4 +1,4 @@
-import { ADD_REGISTER, DELETE_REGISTER } from '../actions';
+import { ADD_CADASTRO, DELETE_CADASTRO } from '../actions';
 
 const initialState = {
   currencies: [], // array de string
@@ -9,9 +9,9 @@ const initialState = {
 
 function wallet(state = initialState, action) {
   switch (action.type) {
-  case ADD_REGISTER:
+  case ADD_CADASTRO:
     return [...state, action.value];
-  case DELETE_REGISTER:
+  case DELETE_CADASTRO:
     return state.filter((register) => register !== action.value);
   default:
     return state;

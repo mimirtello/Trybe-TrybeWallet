@@ -3,7 +3,10 @@ import React, { Component } from 'react';
 class WalletForm extends Component {
   render() {
     return (
-      <div>WalletForm</div>
+      <div>
+        <div>WalletForm</div>
+      </div>
+
     );
   }
 }
