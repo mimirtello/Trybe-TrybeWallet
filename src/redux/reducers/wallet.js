@@ -1,4 +1,4 @@
-import { ADD_CADASTRO, DELETE_CADASTRO } from '../actions';
+import { REQUEST_API, GET_MOEDA } from '../actions';
 
 const initialState = {
   currencies: [], // array de string
@@ -7,14 +7,27 @@ const initialState = {
   idToEdit: 0, // valor numérico que armazena o id da despesa que esta sendo editada
   total: 0,
   moeda: 'BRL',
+  isLoading: false,
 };
 
 function wallet(state = initialState, action) {
   switch (action.type) {
-  case ADD_CADASTRO:
-    return [...state, action.value];
-  case DELETE_CADASTRO:
-    return state.filter((register) => register !== action.value);
+  case REQUEST_API:
+    return {
+      ...state,
+      isLoading: true,
+
+    };
+  case GET_MOEDA:
+    return {
+      ...state,
+      isLoading: false,
+      currencies: action.data,
+    };
+  // case ADD_CADASTRO:
+  //   return [...state, action.value];
+  // case DELETE_CADASTRO:
+  //   return state.filter((register) => register !== action.value);
   default:
     return state;
   }
