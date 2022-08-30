@@ -1,4 +1,5 @@
-import { REQUEST_API, GET_MOEDA, ADD_CADASTRO, DELETE_CADASTRO } from '../actions';
+import { REQUEST_API, GET_MOEDA, ADD_CADASTRO,
+  DELETE_CADASTRO, EDIT_CADASTRO, SALVA_EDIT } from '../actions';
 
 const initialState = {
   currencies: [], // array de string
@@ -37,6 +38,19 @@ function wallet(state = initialState, action) {
   case DELETE_CADASTRO:
     return { ...state,
       expenses: state.expenses.filter((cadastro) => cadastro !== action.value) };
+  case EDIT_CADASTRO:
+    return { ...state,
+      editor: true,
+      idToEdit: action.id,
+    };
+  case SALVA_EDIT:
+    return { ...state,
+      editor: false,
+      idToEdit: action.idToEdit,
+      expenses: state.expenses.map((elemento) => (
+        elemento.id === state.idToEdit ? action.expenses : elemento)),
+    };
+
   default:
     return state;
   }

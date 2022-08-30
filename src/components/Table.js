@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteRegister } from '../redux/actions/index';
+import { deleteRegister, editRegister } from '../redux/actions/index';
 
 class Table extends Component {
   render() {
     const { expenses, dispatch } = this.props;
-
     return (
       <div>
         <table className="tabela">
@@ -26,7 +25,7 @@ class Table extends Component {
           <tbody>
             { expenses.map((elemento) => (
 
-              <tr key={ elemento.id }>
+              <tr key={ elemento.exchangeRates[elemento.currency].timestamp }>
                 <td>
                   {elemento.description}
                 </td>
@@ -59,6 +58,14 @@ class Table extends Component {
                     onClick={ () => dispatch(deleteRegister(elemento)) }
                   >
                     Deletar
+                  </button>
+
+                  <button
+                    data-testid="edit-btn"
+                    type="submit"
+                    onClick={ () => dispatch(editRegister(elemento.id)) }
+                  >
+                    Editar despesa
                   </button>
                 </td>
               </tr>

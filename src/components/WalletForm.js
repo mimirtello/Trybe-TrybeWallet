@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchAPI, addRegister } from '../redux/actions/index';
+import { fetchAPI, addRegister, salvaEdit } from '../redux/actions/index';
 
 class WalletForm extends Component {
   state = {
@@ -23,25 +23,53 @@ class WalletForm extends Component {
   };
 
   AdicionarDespesas = async () => {
-    const { dispatch } = this.props;
+    const { dispatch, editor } = this.props;
     const { value, description, currency, method, tag } = this.state;
-    const response = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const data = await response.json();
-    delete data.USDT;
-    dispatch(addRegister({ value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates: data }));
-    this.setState({
-      value: '',
-      description: '',
-    });
+
+    if (!editor) {
+      const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+      const data = await response.json();
+      delete data.USDT;
+      dispatch(addRegister({ value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates: data }));
+      // this.setState({
+      // value: expenses[expenses.id].value,
+      // description: expenses[expenses.id].description,
+      // currency: expenses[expenses.id].currency,
+      // method: expenses[expenses.id].method,
+      // tag: expenses[expenses.id].tag,
+      // });
+    }
+
+    if (editor) {
+      const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+      const data = await response.json();
+      delete data.USDT;
+      (
+        dispatch(salvaEdit({
+          value,
+          description,
+          currency,
+          method,
+          tag,
+          exchangeRates: data }))
+      );
+      this.setState({
+        value: '',
+        description: '',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Alimentação',
+      });
+    }
   };
 
   render() {
-    const { currencies } = this.props;
+    const { currencies, editor } = this.props;
     const { value, description } = this.state;
     return (
       <div>
@@ -103,20 +131,26 @@ class WalletForm extends Component {
           type="submit"
           onClick={ this.AdicionarDespesas }
         >
-          Adicionar Despesas
+          { editor ? 'Editar despesa' : 'Adicionar Despesas' }
         </button>
       </div>
 
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  editor: state.wallet.editor,
+  idToEdit: state.wallet.idToEdit,
+  // expenses: state.wallet.expenses,
 });
 
 WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
+  editor: PropTypes.bool.isRequired,
+  // expenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
 export default connect(mapStateToProps)(WalletForm);
