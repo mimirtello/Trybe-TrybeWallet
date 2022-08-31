@@ -36,6 +36,10 @@ class WalletForm extends Component {
         method,
         tag,
         exchangeRates: data }));
+      this.setState({
+        value: '',
+        description: '',
+      });
       // this.setState({
       // value: expenses[expenses.id].value,
       // description: expenses[expenses.id].description,
