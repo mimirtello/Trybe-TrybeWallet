@@ -46,7 +46,6 @@ function wallet(state = initialState, action) {
   case SALVA_EDIT:
     return { ...state,
       editor: false,
-      idToEdit: action.idToEdit,
       expenses: state.expenses.map((elemento) => (
         elemento.id === state.idToEdit ? action.expenses : elemento)),
     };

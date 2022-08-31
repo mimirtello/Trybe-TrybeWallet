@@ -25,7 +25,7 @@ class Table extends Component {
           <tbody>
             { expenses.map((elemento) => (
 
-              <tr key={ elemento.exchangeRates[elemento.currency].timestamp }>
+              <tr key={ elemento.id + 1 }>
                 <td>
                   {elemento.description}
                 </td>
@@ -81,11 +81,13 @@ class Table extends Component {
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
+  // idToEdit: state.wallet,
 });
 
 Table.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   dispatch: PropTypes.func.isRequired,
+  // idToEdit: PropTypes.shape(PropTypes.object.isRequired).isRequired,
 
 };
 export default connect(mapStateToProps)(Table);

@@ -5,6 +5,7 @@ import { fetchAPI, addRegister, salvaEdit } from '../redux/actions/index';
 
 class WalletForm extends Component {
   state = {
+    id: 0,
     value: '',
     description: '',
     currency: 'USD',
@@ -24,13 +25,15 @@ class WalletForm extends Component {
 
   AdicionarDespesas = async () => {
     const { dispatch, editor } = this.props;
-    const { value, description, currency, method, tag } = this.state;
+    const { id, value, description, currency, method, tag } = this.state;
 
     if (!editor) {
       const response = await fetch('https://economia.awesomeapi.com.br/json/all');
       const data = await response.json();
       delete data.USDT;
-      dispatch(addRegister({ value,
+      dispatch(addRegister({
+        id,
+        value,
         description,
         currency,
         method,
@@ -53,15 +56,16 @@ class WalletForm extends Component {
       const response = await fetch('https://economia.awesomeapi.com.br/json/all');
       const data = await response.json();
       delete data.USDT;
-      (
-        dispatch(salvaEdit({
-          value,
-          description,
-          currency,
-          method,
-          tag,
-          exchangeRates: data }))
-      );
+
+      dispatch(salvaEdit({
+        id,
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates: data }));
+
       this.setState({
         value: '',
         description: '',
@@ -147,7 +151,6 @@ const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   editor: state.wallet.editor,
   idToEdit: state.wallet.idToEdit,
-  // expenses: state.wallet.expenses,
 });
 
 WalletForm.propTypes = {
